@@ -22,8 +22,8 @@ export const skillCategories = [
 ];
 
 export const stats = [
-  { value: "12", label: "Open Source Projects" },
-  { value: "3+", label: "Years Experience" },
+  { value: "35", label: "Open Source Projects" },
+  { value: "1+", label: "Years Experience" },
   { value: "1", label: "Published Research" }
 ];
 
