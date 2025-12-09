@@ -22,9 +22,9 @@ export const skillCategories = [
 ];
 
 export const stats = [
-  { value: "35+", label: "Projects" },
-  { value: "95%", label: "AI Accuracy" },
-  { value: "10K+", label: "Daily Docs" }
+  { value: "12", label: "Open Source Projects" },
+  { value: "3+", label: "Years Experience" },
+  { value: "1", label: "Published Research" }
 ];
 
 export const languages = [

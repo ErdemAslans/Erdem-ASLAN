@@ -6,9 +6,9 @@ export const experiences = [
     period: "January 2025 - Present",
     location: "Istanbul, Turkey",
     highlights: [
-      "Developed intelligent document processing pipeline integrating OCR, LLM, and RPA reducing processing time by 75%",
-      "Built enterprise conversational analytics platform orchestrating 10+ APIs across 200+ retail locations",
-      "Designed AI-powered analytics systems processing 2TB+ data with 95% intent accuracy"
+      "Developed intelligent document processing pipeline integrating OCR, LLM, and RPA for automated workflows",
+      "Built enterprise conversational analytics platform with multi-API orchestration for retail operations",
+      "Designed AI-powered analytics systems with natural language interface for business intelligence"
     ]
   },
   {

@@ -4,7 +4,7 @@ import { Menu, X, Github } from 'lucide-react';
 import { useScrollPosition } from '@/hooks';
 import { NAV_ITEMS, scrollToSection } from '@/utils/constants';
 import { contactInfo } from '@/data/contact';
-import { GradientText } from './ui';
+import { GradientText, ThemeToggle } from './ui';
 
 const Navbar = () => {
   const { scrollY } = useScrollPosition();
@@ -77,25 +77,31 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* GitHub Button - Desktop */}
-            <a 
-              href={contactInfo.github}
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="hidden md:flex items-center gap-2 px-5 py-2.5 glass-card rounded-full text-sm font-medium text-slate-light hover:text-cyan transition-colors"
-            >
-              <Github className="w-4 h-4" />
-              GitHub
-            </a>
+            {/* Right Side Actions */}
+            <div className="hidden md:flex items-center gap-4">
+              <ThemeToggle />
+              <a
+                href={contactInfo.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-5 py-2.5 glass-card rounded-full text-sm font-medium text-slate-light hover:text-cyan transition-colors"
+              >
+                <Github className="w-4 h-4" />
+                GitHub
+              </a>
+            </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden z-50 p-2 text-slate-light hover:text-cyan transition-colors"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            {/* Mobile Actions */}
+            <div className="flex md:hidden items-center gap-2 z-50">
+              <ThemeToggle />
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 text-slate-light hover:text-cyan transition-colors"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
         </div>
       </motion.nav>

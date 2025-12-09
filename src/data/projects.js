@@ -41,7 +41,7 @@ export const projects = [
     category: "enterprise",
     description: "End-to-end document processing and classification pipeline integrating OCR, LLM analysis, and Robot Framework automation for enterprise document workflows.",
     tech: ["PyTorch", "Transformers", "RPA", "OCR"],
-    metrics: "10,000+ Daily Documents",
+    metrics: "OCR + LLM + RPA Integration",
     link: "https://github.com/ErdemAslans/DocFlow-RPA"
   },
   {

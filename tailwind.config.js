@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -58,6 +59,7 @@ export default {
         'fade-in': 'fadeIn 0.6s ease forwards',
         'slide-in-left': 'slideInLeft 0.6s ease forwards',
         'slide-in-right': 'slideInRight 0.6s ease forwards',
+        'shimmer': 'shimmer 2s infinite',
       },
       keyframes: {
         float: {
@@ -83,6 +85,9 @@ export default {
         slideInRight: {
           '0%': { opacity: '0', transform: 'translateX(30px)' },
           '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' },
         },
       },
       backgroundImage: {
