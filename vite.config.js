@@ -26,5 +26,16 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'motion': ['framer-motion'],
+          'syntax-highlighter': ['react-syntax-highlighter'],
+          'charts': ['recharts'],
+          'icons': ['lucide-react'],
+        },
+      },
+    },
   },
 })

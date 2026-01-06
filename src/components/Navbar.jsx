@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Github } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, Github, FileText, BookOpen } from 'lucide-react';
 import { useScrollPosition } from '@/hooks';
 import { NAV_ITEMS, scrollToSection } from '@/utils/constants';
 import { contactInfo } from '@/data/contact';
-import { GradientText, ThemeToggle } from './ui';
+import { GradientText, ThemeToggle, Button } from './ui';
 
 const Navbar = () => {
   const { scrollY } = useScrollPosition();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
   const isScrolled = scrollY > 50;
+  const isHomePage = location.pathname === '/';
 
   // Close mobile menu on resize
   useEffect(() => {
@@ -35,8 +39,21 @@ const Navbar = () => {
   }, [isMobileMenuOpen]);
 
   const handleNavClick = (sectionId) => {
-    scrollToSection(sectionId);
+    if (isHomePage) {
+      scrollToSection(sectionId);
+    } else {
+      navigate(`/#${sectionId}`);
+    }
     setIsMobileMenuOpen(false);
+  };
+
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    if (isHomePage) {
+      scrollToSection('home');
+    } else {
+      navigate('/');
+    }
   };
 
   return (
@@ -46,45 +63,58 @@ const Navbar = () => {
         animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled 
-            ? 'bg-midnight-800/90 backdrop-blur-lg border-b border-navy-800/30' 
+          isScrolled
+            ? 'bg-midnight-800/90 backdrop-blur-lg border-b border-navy-800/30'
             : ''
         }`}
       >
         <div className="section-container">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <a 
-              href="#home" 
-              onClick={(e) => { e.preventDefault(); handleNavClick('home'); }}
+            <Link
+              to="/"
+              onClick={handleLogoClick}
               className="text-xl font-semibold tracking-tight z-50"
             >
               <GradientText>EA</GradientText>
               <span className="text-slate font-light ml-1">.</span>
-            </a>
+            </Link>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-10">
+            <div className="hidden md:flex items-center gap-8">
               {NAV_ITEMS.map((item) => (
                 <a
                   key={item.id}
-                  href={`#${item.id}`}
+                  href={isHomePage ? `#${item.id}` : `/#${item.id}`}
                   onClick={(e) => { e.preventDefault(); handleNavClick(item.id); }}
                   className="nav-link"
                 >
                   {item.label}
                 </a>
               ))}
+              <Link
+                to="/blog"
+                className={`nav-link ${location.pathname.startsWith('/blog') ? 'text-cyan' : ''}`}
+              >
+                Blog
+              </Link>
             </div>
 
             {/* Right Side Actions */}
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-3">
               <ThemeToggle />
+              <Link
+                to="/resume"
+                className="flex items-center gap-2 px-4 py-2 glass-card rounded-full text-sm font-medium text-slate-light hover:text-cyan transition-colors"
+              >
+                <FileText className="w-4 h-4" />
+                Resume
+              </Link>
               <a
                 href={contactInfo.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 glass-card rounded-full text-sm font-medium text-slate-light hover:text-cyan transition-colors"
+                className="flex items-center gap-2 px-4 py-2 glass-card rounded-full text-sm font-medium text-slate-light hover:text-cyan transition-colors"
               >
                 <Github className="w-4 h-4" />
                 GitHub
@@ -117,7 +147,7 @@ const Navbar = () => {
             className="fixed inset-0 z-40 md:hidden"
           >
             {/* Backdrop */}
-            <div 
+            <div
               className="absolute inset-0 bg-midnight-900/95 backdrop-blur-lg"
               onClick={() => setIsMobileMenuOpen(false)}
             />
@@ -128,12 +158,12 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3, delay: 0.1 }}
-              className="relative h-full flex flex-col items-center justify-center gap-8"
+              className="relative h-full flex flex-col items-center justify-center gap-6"
             >
               {NAV_ITEMS.map((item, index) => (
                 <motion.a
                   key={item.id}
-                  href={`#${item.id}`}
+                  href={isHomePage ? `#${item.id}` : `/#${item.id}`}
                   onClick={(e) => { e.preventDefault(); handleNavClick(item.id); }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -144,18 +174,38 @@ const Navbar = () => {
                 </motion.a>
               ))}
               
-              <motion.a
-                href={contactInfo.github}
-                target="_blank"
-                rel="noopener noreferrer"
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
-                className="flex items-center gap-2 mt-4 text-slate-light hover:text-cyan transition-colors"
+                className="flex flex-col items-center gap-4 mt-4 pt-4 border-t border-navy-800/50"
               >
-                <Github className="w-5 h-5" />
-                GitHub
-              </motion.a>
+                <Link
+                  to="/blog"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-2 text-xl text-slate-light hover:text-cyan transition-colors"
+                >
+                  <BookOpen className="w-5 h-5" />
+                  Blog
+                </Link>
+                <Link
+                  to="/resume"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-2 text-xl text-slate-light hover:text-cyan transition-colors"
+                >
+                  <FileText className="w-5 h-5" />
+                  Resume
+                </Link>
+                <a
+                  href={contactInfo.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-slate-light hover:text-cyan transition-colors"
+                >
+                  <Github className="w-5 h-5" />
+                  GitHub
+                </a>
+              </motion.div>
             </motion.div>
           </motion.div>
         )}

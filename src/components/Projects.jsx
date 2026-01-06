@@ -1,62 +1,88 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
-import { Folder, ExternalLink, ArrowRight } from 'lucide-react';
+import { Folder, ExternalLink, ArrowRight, Eye } from 'lucide-react';
 import { SectionHeader, GlassCard } from './ui';
-import { projects, projectFilters, filterProjects } from '@/data/projects';
+import { projects, projectFilters, filterProjects, projectCaseStudies, getProjectSlug } from '@/data/projects';
 import { contactInfo } from '@/data/contact';
 
 const ProjectCard = ({ project, index }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const hasCaseStudy = projectCaseStudies?.some(cs => cs.projectId === project.id);
+  const projectSlug = getProjectSlug(project);
+
+  const CardWrapper = hasCaseStudy ? Link : 'a';
+  const cardProps = hasCaseStudy
+    ? { to: `/projects/${projectSlug}` }
+    : { href: project.link, target: "_blank", rel: "noopener noreferrer" };
 
   return (
-    <motion.a
-      href={project.link}
-      target="_blank"
-      rel="noopener noreferrer"
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
-      className="glass-card-hover p-6 block"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex items-start justify-between mb-4">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-navy-800 to-midnight-900 flex items-center justify-center">
-          <Folder className="w-6 h-6 text-cyan" strokeWidth={1.5} />
+      <CardWrapper
+        {...cardProps}
+        className="glass-card-hover p-6 block h-full"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="flex items-start justify-between mb-4">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-navy-800 to-midnight-900 flex items-center justify-center">
+            <Folder className="w-6 h-6 text-cyan" strokeWidth={1.5} />
+          </div>
+          <div className="flex items-center gap-2">
+            {hasCaseStudy && (
+              <span className="text-xs px-2 py-1 bg-cyan/20 text-cyan rounded-full flex items-center gap-1">
+                <Eye className="w-3 h-3" />
+                Case Study
+              </span>
+            )}
+            <ExternalLink
+              className={`w-5 h-5 transition-all duration-300 ${
+                isHovered
+                  ? 'text-cyan translate-x-1 -translate-y-1'
+                  : 'text-slate'
+              }`}
+            />
+          </div>
         </div>
-        <ExternalLink 
-          className={`w-5 h-5 transition-all duration-300 ${
-            isHovered 
-              ? 'text-cyan translate-x-1 -translate-y-1' 
-              : 'text-slate'
-          }`} 
-        />
-      </div>
 
-      <h3 className="text-lg font-semibold text-midnight-50 mb-2">
-        {project.title}
-      </h3>
-      <p className="text-sm text-slate mb-4 line-clamp-3">
-        {project.description}
-      </p>
+        <h3 className="text-lg font-semibold text-midnight-50 mb-2">
+          {project.title}
+        </h3>
+        <p className="text-sm text-slate mb-4 line-clamp-3">
+          {project.description}
+        </p>
 
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-xs font-mono text-cyan bg-cyan/10 px-2 py-1 rounded">
-          {project.metrics}
-        </span>
-      </div>
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-xs font-mono text-cyan bg-cyan/10 px-2 py-1 rounded">
+            {project.metrics}
+          </span>
+        </div>
 
-      <div className="flex flex-wrap gap-2">
-        {project.tech.slice(0, 3).map((tech) => (
-          <span key={tech} className="text-xs text-slate">{tech}</span>
-        ))}
-        {project.tech.length > 3 && (
-          <span className="text-xs text-slate">+{project.tech.length - 3}</span>
+        <div className="flex flex-wrap gap-2">
+          {project.tech.slice(0, 3).map((tech) => (
+            <span key={tech} className="text-xs text-slate">{tech}</span>
+          ))}
+          {project.tech.length > 3 && (
+            <span className="text-xs text-slate">+{project.tech.length - 3}</span>
+          )}
+        </div>
+
+        {hasCaseStudy && (
+          <div className="mt-4 pt-4 border-t border-navy-800/30">
+            <span className="text-sm text-cyan flex items-center gap-2 group">
+              View Case Study
+              <ArrowRight className={`w-4 h-4 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
+            </span>
+          </div>
         )}
-      </div>
-    </motion.a>
+      </CardWrapper>
+    </motion.div>
   );
 };
 

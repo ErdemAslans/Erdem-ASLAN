@@ -6,3 +6,7 @@ export { SectionHeader } from './SectionHeader';
 export { default as ThemeToggle } from './ThemeToggle';
 export { default as Skeleton, SkeletonCard, SkeletonText, SkeletonProject } from './Skeleton';
 export { default as LoadingScreen } from './LoadingScreen';
+export { default as ParticleField } from './ParticleField';
+export { default as CountUpNumber } from './CountUpNumber';
+export { default as ReadingProgress } from './ReadingProgress';
+export { default as CopyButton } from './CopyButton';

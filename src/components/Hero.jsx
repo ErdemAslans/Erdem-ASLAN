@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Download, FileText } from 'lucide-react';
 import { GradientText, Button } from './ui';
 import { stats } from '@/data/skills';
 import { scrollToSection } from '@/utils/constants';
@@ -90,13 +91,13 @@ const Hero = () => {
               </motion.p>
 
               {/* CTA Buttons */}
-              <motion.div 
+              <motion.div
                 className="flex flex-wrap gap-4 pt-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <Button 
+                <Button
                   variant="primary"
                   onClick={() => scrollToSection('projects')}
                   icon
@@ -104,11 +105,22 @@ const Hero = () => {
                 >
                   View Projects
                 </Button>
-                <Button 
-                  variant="secondary"
+                <Link to="/resume">
+                  <Button
+                    variant="secondary"
+                    className="group"
+                  >
+                    <FileText className="w-4 h-4" />
+                    Download Resume
+                  </Button>
+                </Link>
+                <Button
+                  variant="ghost"
                   onClick={() => scrollToSection('contact')}
+                  className="text-slate-light hover:text-cyan"
                 >
                   Get in Touch
+                  <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </motion.div>
 

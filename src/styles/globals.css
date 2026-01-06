@@ -90,6 +90,38 @@ html.light {
     background: rgba(56, 189, 248, 0.3);
     color: var(--text-primary);
   }
+
+  /* Focus Styles for Accessibility */
+  *:focus-visible {
+    outline: 2px solid var(--cyan-color);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--cyan-color);
+    outline-offset: 2px;
+  }
+
+  /* Skip to Content Link */
+  .skip-to-content {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--cyan-color);
+    color: var(--bg-primary);
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 0 0 0.5rem 0;
+    font-weight: 600;
+    z-index: 100;
+    transition: top 0.3s;
+  }
+
+  .skip-to-content:focus {
+    top: 0;
+  }
 }
 
 /* ===== LIGHT THEME OVERRIDES ===== */
