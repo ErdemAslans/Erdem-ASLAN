@@ -2,13 +2,11 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
-import { Folder, ExternalLink, ArrowRight, Eye } from 'lucide-react';
-import { SectionHeader, GlassCard } from './ui';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { projects, projectFilters, filterProjects, projectCaseStudies, getProjectSlug } from '@/data/projects';
 import { contactInfo } from '@/data/contact';
 
 const ProjectCard = ({ project, index }) => {
-  const [isHovered, setIsHovered] = useState(false);
   const hasCaseStudy = projectCaseStudies?.some(cs => cs.projectId === project.id);
   const projectSlug = getProjectSlug(project);
 
@@ -26,61 +24,38 @@ const ProjectCard = ({ project, index }) => {
     >
       <CardWrapper
         {...cardProps}
-        className="glass-card-hover p-6 block h-full"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className="project-card block h-full"
       >
-        <div className="flex items-start justify-between mb-4">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-navy-800 to-midnight-900 flex items-center justify-center">
-            <Folder className="w-6 h-6 text-cyan" strokeWidth={1.5} />
-          </div>
-          <div className="flex items-center gap-2">
-            {hasCaseStudy && (
-              <span className="text-xs px-2 py-1 bg-cyan/20 text-cyan rounded-full flex items-center gap-1">
-                <Eye className="w-3 h-3" />
-                Case Study
-              </span>
-            )}
-            <ExternalLink
-              className={`w-5 h-5 transition-all duration-300 ${
-                isHovered
-                  ? 'text-cyan translate-x-1 -translate-y-1'
-                  : 'text-slate'
-              }`}
-            />
-          </div>
+        <div className="flex items-start justify-between mb-3">
+          <h3 className="project-title">
+            {project.title}
+          </h3>
+          <ArrowUpRight className="w-4 h-4 text-text-muted group-hover:text-text-primary transition-colors" />
         </div>
-
-        <h3 className="text-lg font-semibold text-midnight-50 mb-2">
-          {project.title}
-        </h3>
-        <p className="text-sm text-slate mb-4 line-clamp-3">
+        
+        <p className="project-description mb-4 line-clamp-2">
           {project.description}
         </p>
 
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-xs font-mono text-cyan bg-cyan/10 px-2 py-1 rounded">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="badge">
             {project.metrics}
           </span>
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          {project.tech.slice(0, 3).map((tech) => (
-            <span key={tech} className="text-xs text-slate">{tech}</span>
-          ))}
-          {project.tech.length > 3 && (
-            <span className="text-xs text-slate">+{project.tech.length - 3}</span>
+          {hasCaseStudy && (
+            <span className="badge">
+              Case Study
+            </span>
           )}
         </div>
 
-        {hasCaseStudy && (
-          <div className="mt-4 pt-4 border-t border-navy-800/30">
-            <span className="text-sm text-cyan flex items-center gap-2 group">
-              View Case Study
-              <ArrowRight className={`w-4 h-4 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
-            </span>
-          </div>
-        )}
+        <div className="flex flex-wrap gap-2">
+          {project.tech.slice(0, 4).map((tech) => (
+            <span key={tech} className="tag tag-sm">{tech}</span>
+          ))}
+          {project.tech.length > 4 && (
+            <span className="tag tag-sm">+{project.tech.length - 4}</span>
+          )}
+        </div>
       </CardWrapper>
     </motion.div>
   );
@@ -96,14 +71,9 @@ const Projects = () => {
   const filteredProjects = filterProjects(projects, activeFilter);
 
   return (
-    <section id="projects" className="py-32 relative">
-      <div className="section-container">
-        <SectionHeader 
-          subtitle="Portfolio"
-          title="Featured"
-          highlightedWord="Projects"
-          className="mb-8"
-        />
+    <section id="projects" className="section border-t border-border">
+      <div className="container">
+        <p className="section-title">// Projects</p>
 
         {/* Filters */}
         <motion.div 
@@ -111,13 +81,17 @@ const Projects = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="flex flex-wrap gap-3 mb-12"
+          className="flex flex-wrap gap-2 mb-10"
         >
           {projectFilters.map((filter) => (
             <button
               key={filter.id}
               onClick={() => setActiveFilter(filter.id)}
-              className={`filter-btn ${activeFilter === filter.id ? 'active' : ''}`}
+              className={`px-3 py-1.5 text-sm font-mono rounded transition-colors ${
+                activeFilter === filter.id 
+                  ? 'bg-white text-black' 
+                  : 'text-text-secondary hover:text-text-primary border border-border hover:border-border-hover'
+              }`}
             >
               {filter.label}
             </button>
@@ -127,7 +101,7 @@ const Projects = () => {
         {/* Project Grid */}
         <motion.div 
           layout
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-4"
         >
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, idx) => (
@@ -145,16 +119,16 @@ const Projects = () => {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ delay: 0.5 }}
-          className="text-center mt-12"
+          className="mt-10"
         >
           <a 
             href={`${contactInfo.github}?tab=repositories`}
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 text-slate-light hover:text-cyan transition-colors group"
+            className="link-underline inline-flex items-center gap-2"
           >
-            View All 35+ Repositories
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            View all repositories
+            <ArrowRight className="w-4 h-4" />
           </a>
         </motion.div>
       </div>

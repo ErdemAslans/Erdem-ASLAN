@@ -3,7 +3,6 @@ import {
   About,
   Projects,
   Experience,
-  Testimonials,
   Contact
 } from '@/components';
 
@@ -14,7 +13,6 @@ const Home = () => {
       <About />
       <Projects />
       <Experience />
-      <Testimonials />
       <Contact />
     </main>
   );

@@ -43,11 +43,11 @@ const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
     <div className="flex flex-col items-center gap-4">
       <motion.div
-        className="w-12 h-12 border-2 border-cyan border-t-transparent rounded-full"
+        className="w-8 h-8 border border-border border-t-text-primary rounded-full"
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
       />
-      <p className="text-slate-light text-sm">Loading...</p>
+      <p className="text-text-muted text-sm">Loading...</p>
     </div>
   </div>
 );
@@ -162,7 +162,7 @@ function App() {
       <Router>
         <LoadingScreen isLoading={isLoading} />
 
-        <div className="min-h-screen bg-midnight-800 text-midnight-50 overflow-x-hidden">
+        <div className="min-h-screen bg-bg-primary text-text-primary overflow-x-hidden">
           {/* Background Effects */}
           <Background />
 

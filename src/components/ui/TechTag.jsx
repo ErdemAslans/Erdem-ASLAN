@@ -1,6 +1,6 @@
 export const TechTag = ({ children, className = '' }) => {
   return (
-    <span className={`tech-tag ${className}`}>
+    <span className={`tag ${className}`}>
       {children}
     </span>
   );

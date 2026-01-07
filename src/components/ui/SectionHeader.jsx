@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { GradientText } from './GradientText';
 
 export const SectionHeader = ({ 
   subtitle, 
@@ -15,10 +14,12 @@ export const SectionHeader = ({
       transition={{ duration: 0.5 }}
       className={className}
     >
-      <p className="section-subtitle">{subtitle}</p>
-      <h2 className="section-title">
-        {title} <GradientText>{highlightedWord}</GradientText>
-      </h2>
+      <p className="section-title">// {subtitle || title}</p>
+      {highlightedWord && (
+        <h2 className="text-2xl md:text-3xl font-medium text-text-primary mt-2">
+          {title} {highlightedWord}
+        </h2>
+      )}
     </motion.div>
   );
 };

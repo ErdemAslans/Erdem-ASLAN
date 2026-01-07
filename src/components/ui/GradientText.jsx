@@ -1,6 +1,7 @@
 export const GradientText = ({ children, className = '' }) => {
+  // Minimalist design - plain white text instead of gradients
   return (
-    <span className={`bg-gradient-to-r from-blue-400 via-cyan to-cyan-light bg-clip-text text-transparent ${className}`}>
+    <span className={`text-text-primary ${className}`}>
       {children}
     </span>
   );

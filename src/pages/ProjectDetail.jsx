@@ -1,25 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ExternalLink, Github, Calendar, Target, Lightbulb, Code2, BarChart3, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Github, ChevronRight } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { GlassCard, GradientText, Button, TechTag } from '@/components/ui';
 import { projects, projectCaseStudies } from '@/data/projects';
 
 const TableOfContents = ({ sections, activeSection }) => {
   return (
     <nav className="hidden xl:block fixed right-8 top-1/2 -translate-y-1/2 w-48">
-      <p className="text-xs font-mono text-slate uppercase tracking-wider mb-4">On This Page</p>
+      <p className="text-xs font-mono text-text-muted uppercase tracking-wider mb-4">On This Page</p>
       <ul className="space-y-2">
         {sections.map((section) => (
           <li key={section.id}>
             <a
               href={`#${section.id}`}
-              className={`text-sm transition-colors duration-200 block py-1 border-l-2 pl-3 ${
+              className={`text-sm transition-colors duration-200 block py-1 border-l pl-3 ${
                 activeSection === section.id
-                  ? 'text-cyan border-cyan'
-                  : 'text-slate hover:text-slate-light border-navy-800'
+                  ? 'text-text-primary border-text-primary'
+                  : 'text-text-muted hover:text-text-secondary border-border'
               }`}
             >
               {section.label}
@@ -47,9 +46,9 @@ const ReadingProgress = () => {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-1 bg-navy-800/50 z-50">
+    <div className="fixed top-0 left-0 right-0 h-0.5 bg-border z-50">
       <motion.div
-        className="h-full bg-gradient-to-r from-cyan to-cyan-light"
+        className="h-full bg-text-primary"
         style={{ width: `${progress}%` }}
       />
     </div>
@@ -95,11 +94,11 @@ const ProjectDetail = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-midnight-50 mb-4">Project Not Found</h1>
-          <Button variant="primary" onClick={() => navigate('/')}>
+          <h1 className="text-2xl font-bold text-text-primary mb-4">Project Not Found</h1>
+          <button className="btn-primary" onClick={() => navigate('/')}>
             <ArrowLeft className="w-4 h-4" />
             Back to Home
-          </Button>
+          </button>
         </div>
       </div>
     );
@@ -153,7 +152,7 @@ const ProjectDetail = () => {
       <TableOfContents sections={sections} activeSection={activeSection} />
 
       <article className="min-h-screen pt-24 pb-20">
-        <div className="max-w-4xl mx-auto px-6 lg:px-12">
+        <div className="container max-w-4xl">
           {/* Back Navigation */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -163,9 +162,9 @@ const ProjectDetail = () => {
           >
             <Link
               to="/#projects"
-              className="inline-flex items-center gap-2 text-slate-light hover:text-cyan transition-colors group"
+              className="inline-flex items-center gap-2 text-text-muted hover:text-text-primary transition-colors"
             >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              <ArrowLeft className="w-4 h-4" />
               Back to Projects
             </Link>
           </motion.div>
@@ -179,33 +178,36 @@ const ProjectDetail = () => {
           >
             <div className="flex flex-wrap gap-2 mb-4">
               {project.tech.map((tech) => (
-                <TechTag key={tech}>{tech}</TechTag>
+                <span key={tech} className="tag">
+                  {tech}
+                </span>
               ))}
             </div>
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4">
-              <GradientText>{project.title}</GradientText>
+            <h1 className="text-4xl lg:text-5xl font-bold text-text-primary mb-4">
+              {project.title}
             </h1>
-            <p className="text-lg text-slate-light mb-6">{project.description}</p>
+            <p className="text-lg text-text-muted mb-6">{project.description}</p>
             
             <div className="flex flex-wrap gap-4">
-              <Button
-                variant="primary"
+              <a
                 href={project.link}
-                external
-                icon
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary"
               >
-                <Github className="w-5 h-5" />
+                <Github className="w-4 h-4" />
                 View Repository
-              </Button>
+              </a>
               {project.demo && (
-                <Button
-                  variant="secondary"
+                <a
                   href={project.demo}
-                  external
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary"
                 >
-                  <ExternalLink className="w-5 h-5" />
+                  <ExternalLink className="w-4 h-4" />
                   Live Demo
-                </Button>
+                </a>
               )}
             </div>
           </motion.header>
@@ -217,22 +219,22 @@ const ProjectDetail = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"
           >
-            <GlassCard className="p-4 text-center">
-              <p className="text-2xl font-bold text-cyan">{project.metrics}</p>
-              <p className="text-sm text-slate">Key Metric</p>
-            </GlassCard>
-            <GlassCard className="p-4 text-center">
-              <p className="text-2xl font-bold text-cyan">{project.tech.length}</p>
-              <p className="text-sm text-slate">Technologies</p>
-            </GlassCard>
-            <GlassCard className="p-4 text-center">
-              <p className="text-2xl font-bold text-cyan capitalize">{project.category.replace('-', ' ')}</p>
-              <p className="text-sm text-slate">Category</p>
-            </GlassCard>
-            <GlassCard className="p-4 text-center">
-              <p className="text-2xl font-bold text-cyan">2024</p>
-              <p className="text-sm text-slate">Year</p>
-            </GlassCard>
+            <div className="card p-4 text-center">
+              <p className="text-2xl font-bold text-text-primary">{project.metrics}</p>
+              <p className="text-sm text-text-muted">Key Metric</p>
+            </div>
+            <div className="card p-4 text-center">
+              <p className="text-2xl font-bold text-text-primary">{project.tech.length}</p>
+              <p className="text-sm text-text-muted">Technologies</p>
+            </div>
+            <div className="card p-4 text-center">
+              <p className="text-2xl font-bold text-text-primary capitalize">{project.category.replace('-', ' ')}</p>
+              <p className="text-sm text-text-muted">Category</p>
+            </div>
+            <div className="card p-4 text-center">
+              <p className="text-2xl font-bold text-text-primary">2024</p>
+              <p className="text-sm text-text-muted">Year</p>
+            </div>
           </motion.div>
 
           {/* Overview Section */}
@@ -244,11 +246,8 @@ const ProjectDetail = () => {
             transition={{ duration: 0.5 }}
             className="mb-16"
           >
-            <h2 className="text-2xl font-bold text-midnight-50 mb-4 flex items-center gap-3">
-              <Target className="w-6 h-6 text-cyan" />
-              Overview
-            </h2>
-            <p className="text-slate-light leading-relaxed">{study.overview}</p>
+            <h2 className="section-title">// Overview</h2>
+            <p className="text-text-secondary leading-relaxed">{study.overview}</p>
           </motion.section>
 
           {/* Problem Statement */}
@@ -260,13 +259,10 @@ const ProjectDetail = () => {
             transition={{ duration: 0.5 }}
             className="mb-16"
           >
-            <h2 className="text-2xl font-bold text-midnight-50 mb-4 flex items-center gap-3">
-              <Lightbulb className="w-6 h-6 text-cyan" />
-              Problem Statement
-            </h2>
-            <GlassCard className="p-6">
-              <p className="text-slate-light leading-relaxed">{study.problemStatement}</p>
-            </GlassCard>
+            <h2 className="section-title">// Problem Statement</h2>
+            <div className="card p-6">
+              <p className="text-text-secondary leading-relaxed">{study.problemStatement}</p>
+            </div>
           </motion.section>
 
           {/* Solution */}
@@ -278,27 +274,25 @@ const ProjectDetail = () => {
             transition={{ duration: 0.5 }}
             className="mb-16"
           >
-            <h2 className="text-2xl font-bold text-midnight-50 mb-4 flex items-center gap-3">
-              <Code2 className="w-6 h-6 text-cyan" />
-              Solution
-            </h2>
-            <p className="text-slate-light leading-relaxed mb-6">{study.solution}</p>
+            <h2 className="section-title">// Solution</h2>
+            <p className="text-text-secondary leading-relaxed mb-6">{study.solution}</p>
             
             {study.codeSnippets && study.codeSnippets.length > 0 && (
               <div className="space-y-4">
                 {study.codeSnippets.map((snippet, idx) => (
-                  <div key={idx} className="rounded-lg overflow-hidden">
-                    <div className="bg-navy-800 px-4 py-2 flex items-center justify-between">
-                      <span className="text-sm text-slate">{snippet.filename}</span>
-                      <span className="text-xs text-cyan font-mono">{snippet.language}</span>
+                  <div key={idx} className="rounded overflow-hidden border border-border">
+                    <div className="bg-bg-secondary px-4 py-2 flex items-center justify-between border-b border-border">
+                      <span className="text-sm text-text-muted">{snippet.filename}</span>
+                      <span className="text-xs font-mono text-text-muted">{snippet.language}</span>
                     </div>
                     <SyntaxHighlighter
                       language={snippet.language}
                       style={oneDark}
                       customStyle={{
                         margin: 0,
-                        borderRadius: '0 0 0.5rem 0.5rem',
+                        borderRadius: 0,
                         fontSize: '0.875rem',
+                        background: '#0f0f0f',
                       }}
                     >
                       {snippet.code}
@@ -318,35 +312,32 @@ const ProjectDetail = () => {
             transition={{ duration: 0.5 }}
             className="mb-16"
           >
-            <h2 className="text-2xl font-bold text-midnight-50 mb-4 flex items-center gap-3">
-              <BarChart3 className="w-6 h-6 text-cyan" />
-              Architecture
-            </h2>
-            <GlassCard className="p-6">
-              <p className="text-slate-light leading-relaxed mb-4">{study.architecture.description}</p>
+            <h2 className="section-title">// Architecture</h2>
+            <div className="card p-6">
+              <p className="text-text-secondary leading-relaxed mb-4">{study.architecture.description}</p>
               {study.architecture.diagram && (
                 <img 
                   src={study.architecture.diagram} 
                   alt="Architecture Diagram" 
-                  className="w-full rounded-lg"
+                  className="w-full rounded"
                 />
               )}
               
               {/* Tech Stack Visual */}
-              <div className="mt-6 pt-6 border-t border-navy-800/50">
-                <h4 className="text-sm font-medium text-slate uppercase tracking-wider mb-4">Tech Stack</h4>
+              <div className="mt-6 pt-6 border-t border-border">
+                <h4 className="text-xs font-mono text-text-muted uppercase tracking-wider mb-4">Tech Stack</h4>
                 <div className="flex flex-wrap gap-3">
                   {project.tech.map((tech) => (
                     <span
                       key={tech}
-                      className="px-4 py-2 bg-navy-800/50 rounded-lg text-sm text-slate-light"
+                      className="px-4 py-2 bg-bg-secondary border border-border rounded text-sm text-text-secondary"
                     >
                       {tech}
                     </span>
                   ))}
                 </div>
               </div>
-            </GlassCard>
+            </div>
           </motion.section>
 
           {/* Challenges & Solutions */}
@@ -358,17 +349,17 @@ const ProjectDetail = () => {
             transition={{ duration: 0.5 }}
             className="mb-16"
           >
-            <h2 className="text-2xl font-bold text-midnight-50 mb-6">Challenges & Solutions</h2>
+            <h2 className="section-title">// Challenges & Solutions</h2>
             <div className="space-y-4">
               {study.challenges.map((challenge, idx) => (
-                <GlassCard key={idx} className="p-6">
-                  <h3 className="text-lg font-semibold text-midnight-50 mb-2">{challenge.title}</h3>
-                  <p className="text-slate-light mb-4">{challenge.description}</p>
-                  <div className="flex items-start gap-2 bg-cyan/5 rounded-lg p-4 border border-cyan/20">
-                    <ChevronRight className="w-5 h-5 text-cyan flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-slate-light">{challenge.solution}</p>
+                <div key={idx} className="card p-6">
+                  <h3 className="text-lg font-semibold text-text-primary mb-2">{challenge.title}</h3>
+                  <p className="text-text-secondary mb-4">{challenge.description}</p>
+                  <div className="flex items-start gap-2 bg-bg-secondary rounded p-4 border border-border">
+                    <ChevronRight className="w-5 h-5 text-text-muted flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-text-secondary">{challenge.solution}</p>
                   </div>
-                </GlassCard>
+                </div>
               ))}
             </div>
           </motion.section>
@@ -382,27 +373,27 @@ const ProjectDetail = () => {
             transition={{ duration: 0.5 }}
             className="mb-16"
           >
-            <h2 className="text-2xl font-bold text-midnight-50 mb-6">Impact & Results</h2>
+            <h2 className="section-title">// Impact & Results</h2>
             <div className="grid md:grid-cols-2 gap-4 mb-6">
               {study.impact.metrics.map((metric, idx) => (
-                <GlassCard key={idx} className="p-6 text-center">
-                  <p className="text-3xl font-bold mb-2">
-                    <GradientText>{metric.value}</GradientText>
+                <div key={idx} className="card p-6 text-center">
+                  <p className="text-3xl font-bold text-text-primary mb-2">
+                    {metric.value}
                   </p>
-                  <p className="text-slate">{metric.label}</p>
-                </GlassCard>
+                  <p className="text-text-muted">{metric.label}</p>
+                </div>
               ))}
             </div>
             
             {study.impact.testimonial && (
-              <GlassCard className="p-6">
-                <blockquote className="text-lg text-slate-light italic">
+              <div className="card p-6">
+                <blockquote className="text-lg text-text-secondary italic">
                   "{study.impact.testimonial.quote}"
                 </blockquote>
-                <p className="mt-4 text-sm text-slate">
+                <p className="mt-4 text-sm text-text-muted">
                   — {study.impact.testimonial.author}, {study.impact.testimonial.role}
                 </p>
-              </GlassCard>
+              </div>
             )}
           </motion.section>
 
@@ -412,9 +403,9 @@ const ProjectDetail = () => {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="pt-8 border-t border-navy-800/30"
+            className="pt-8 border-t border-border"
           >
-            <h3 className="text-lg font-semibold text-midnight-50 mb-4">Explore More Projects</h3>
+            <h3 className="text-lg font-semibold text-text-primary mb-4">Explore More Projects</h3>
             <div className="grid md:grid-cols-2 gap-4">
               {projects
                 .filter(p => p.id !== project.id)
@@ -423,10 +414,10 @@ const ProjectDetail = () => {
                   <Link
                     key={p.id}
                     to={`/projects/${p.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`}
-                    className="glass-card-hover p-4 block"
+                    className="card card-interactive p-4 block"
                   >
-                    <h4 className="font-semibold text-midnight-50 mb-1">{p.title}</h4>
-                    <p className="text-sm text-slate line-clamp-2">{p.description}</p>
+                    <h4 className="font-semibold text-text-primary mb-1">{p.title}</h4>
+                    <p className="text-sm text-text-muted line-clamp-2">{p.description}</p>
                   </Link>
                 ))}
             </div>
